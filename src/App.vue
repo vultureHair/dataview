@@ -1,12 +1,27 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <Title></Title>
+    <NavMenu></NavMenu>
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-    </div>
+    </div> -->
     <router-view />
   </div>
 </template>
+
+<script>
+import Title from "./components/header/Title";
+import NavMenu from "./components/navMenu/NavMenu";
+
+export default {
+  name: "App",
+  components: {
+    Title,
+    NavMenu
+  }
+};
+</script>
 
 <style>
 #app {
