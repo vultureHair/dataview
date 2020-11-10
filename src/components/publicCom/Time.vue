@@ -1,26 +1,36 @@
 <template>
-  <div>{{ time }}</div>
+  <div>{{ localTime }}</div>
 </template>
 
 <script>
 export default {
-  name: "Time",
+  name: "TopMenu",
   data() {
     return {
-      time: ""
+      localTime: ""
     };
   },
   methods: {
-    getTime() {
-      this.time = this.$moment(new Date()).format("YYYY.MM.DD HH:mm:ss");
+    currentTime() {
+      setInterval(this.getDate, 500);
+    },
+    getDate() {
+      let date = new Date(+new Date() + 8 * 3600 * 1000)
+        .toISOString()
+        .replace(/T/g, " ")
+        .replace(/\.[\d]{3}Z/, "");
+
+      this.localTime = date;
     }
   },
   mounted() {
-    let that = this;
-    that.getTime();
-    setInterval(function() {
-      that.getTime();
-    }, 1000);
+    this.currentTime();
+  },
+  beforeDestroy: function() {
+    if (this.getDate) {
+      // console.log("销毁定时器");
+      clearInterval(this.getDate); // 在Vue实例销毁前，清除时间定时器
+    }
   }
 };
 </script>
