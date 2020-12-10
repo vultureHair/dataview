@@ -33,4 +33,8 @@ export default {
 a {
   text-decoration: none;
 }
+.el-main {
+  padding: 0 !important;
+  border: 2px solid #000;
+}
 </style>

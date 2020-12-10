@@ -1,14 +1,94 @@
 <template>
-  <ProductEchartsLine></ProductEchartsLine>
+  <div class="con">
+    <HistoryView class="left"></HistoryView>
+    <div class="center">
+      <ProductEchartsLine class="center-one"></ProductEchartsLine>
+      <ProductSecond class="center-two"></ProductSecond>
+      <div class="center-three">
+        <ProductThird class="center-three-left"></ProductThird>
+        <ProductForth></ProductForth>
+      </div>
+      <ProductGrid></ProductGrid>
+    </div>
+    <div class="right">
+      <Picture class="right-one"></Picture>
+      <Info class="right-two"></Info>
+      <SalesGrid class="right-three"></SalesGrid>
+    </div>
+  </div>
 </template>
 
 <script>
-import ProductEchartsLine from "@/components/product/ProductInfo";
+import ProductEchartsLine from "@/components/product/productInfo/center/ProductInfo";
+import ProductSecond from "@/components/product/productInfo/center/ProductSecond";
+import ProductThird from "@/components/product/productInfo/center/ProductThird";
+import ProductForth from "@/components/product/productInfo/center/ProductForth";
+import Picture from "@/components/product/productInfo/right/Picture";
+import SalesGrid from "@/components/product/productInfo/right/SalesGrid";
+import Info from "@/components/product/productInfo/right/Info";
+import HistoryView from "@/components/publicCom/HistoryView";
+import ProductGrid from "@/components/product/productInfo/center/ProductGrid";
 
 export default {
-  name: "productInfo",
+  name: "ProductInfo",
   components: {
-    ProductEchartsLine
+    ProductEchartsLine,
+    ProductSecond,
+    Picture,
+    SalesGrid,
+    Info,
+    ProductThird,
+    ProductForth,
+    HistoryView,
+    ProductGrid
   }
 };
 </script>
+
+<style scoped>
+.con {
+  display: grid;
+  grid-template-columns: 300px auto 300px;
+  grid-template-rows: auto;
+}
+.left {
+  border-right: 1px solid #000;
+}
+.right {
+  border-left: 1px solid #000;
+}
+
+.center-one {
+  border-bottom: 1px solid #000;
+  margin-top: 10px;
+}
+.center-two {
+  border-bottom: 1px solid #000;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.right-one {
+  height: 300px;
+  padding: 10px 10px 0 10px;
+}
+
+.right-two {
+  border-bottom: 1px solid #000;
+  height: 200px;
+}
+
+.center-three {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid #000;
+}
+
+.center-three-left {
+  border-right: 1px solid #000;
+}
+
+.right-three {
+  height: 500px;
+}
+</style>

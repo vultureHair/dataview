@@ -10,6 +10,14 @@ export default {
       localTime: ""
     };
   },
+  mounted() {
+    this.currentTime();
+  },
+  beforeDestroy: function() {
+    if (this.getDate) {
+      clearInterval(this.getDate); // 在Vue实例销毁前，清除时间定时器
+    }
+  },
   methods: {
     currentTime() {
       setInterval(this.getDate, 500);
@@ -21,15 +29,6 @@ export default {
         .replace(/\.[\d]{3}Z/, "");
 
       this.localTime = date;
-    }
-  },
-  mounted() {
-    this.currentTime();
-  },
-  beforeDestroy: function() {
-    if (this.getDate) {
-      // console.log("销毁定时器");
-      clearInterval(this.getDate); // 在Vue实例销毁前，清除时间定时器
     }
   }
 };
