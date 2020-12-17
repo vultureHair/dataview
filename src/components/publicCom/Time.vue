@@ -16,11 +16,12 @@ export default {
   beforeDestroy: function() {
     if (this.getDate) {
       clearInterval(this.getDate); // 在Vue实例销毁前，清除时间定时器
+      this.getDate = null;
     }
   },
   methods: {
     currentTime() {
-      setInterval(this.getDate, 500);
+      setInterval(this.getDate, 1000);
     },
     getDate() {
       let date = new Date(+new Date() + 8 * 3600 * 1000)

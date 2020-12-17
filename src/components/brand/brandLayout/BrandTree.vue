@@ -53,9 +53,6 @@ export default {
           top: "10px",
           show: true,
           feature: {
-            dataView: {
-              show: true
-            },
             restore: {},
             saveAsImage: {}
           }

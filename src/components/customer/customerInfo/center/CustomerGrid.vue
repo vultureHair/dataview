@@ -1,6 +1,13 @@
 <template>
   <div>
     <h3>客户累计购买详情</h3>
+    <el-button
+      type="primary"
+      icon="el-icon-download"
+      class="downloadData"
+      @click="download()"
+      >下载</el-button
+    >
     <div
       id="GridCategory"
       style="width: 100%;height: 400px;"
@@ -11,6 +18,7 @@
 
 <script>
 import $ from "jquery";
+import json2csv from "json2csv";
 
 export default {
   name: "CustomerGrid",
@@ -18,6 +26,7 @@ export default {
     return {
       customer: "",
       tableData: "",
+      fields: ["sil_No_", "totalValue", "totalPrice", "totalOrder"],
       columnsName: [
         {
           field: "sil_No_",
@@ -94,7 +103,48 @@ export default {
       var eGridDiv = document.querySelector("#GridCategory");
       // eslint-disable-next-line no-undef
       new agGrid.Grid(eGridDiv, gridOptions);
+    },
+    download() {
+      //tableData：数据，fields：字段名
+      try {
+        const result = json2csv.parse(this.tableData, {
+          fields: this.fields
+        });
+        // 判断浏览器类型
+        if (
+          (navigator.userAgent.indexOf("compatible") > -1 &&
+            navigator.userAgent.indexOf("MSIE") > -1) ||
+          navigator.userAgent.indexOf("Edge") > -1
+        ) {
+          //IE10或Edge浏览器
+          var BOM = "\uFEFF";
+          var csvData = new Blob([BOM + result], { type: "text/csv" });
+          navigator.msSaveBlob(csvData, `grid.csv`);
+        } else {
+          //非IE浏览器
+          var csvContent = "data:text/csv;charset=utf-8,\uFEFF" + result;
+          //使用a标签的download属性实现下载功能
+          var link = document.createElement("a");
+          link.href = encodeURI(csvContent);
+          link.download = `grid.csv`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      } catch (err) {
+        alert(err);
+      }
     }
   }
 };
 </script>
+
+<style scoped>
+.downloadData {
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  height: 30px;
+  padding: 5px 10px;
+}
+</style>

@@ -4,7 +4,7 @@
     <div class="center">
       <CustomerInfoEcharts class="ModelInfoEcharts"></CustomerInfoEcharts>
       <CustomerProductTop class="ModelProductTop"></CustomerProductTop>
-      <CustomerGrid></CustomerGrid>
+      <CustomerGrid class="CustomerGrid"></CustomerGrid>
     </div>
     <div class="right">
       <CustomerPicture></CustomerPicture>
@@ -52,5 +52,9 @@ export default {
 .ModelProductTop {
   padding-bottom: 10px;
   border-bottom: 1px solid #000;
+}
+
+.CustomerGrid {
+  position: relative;
 }
 </style>

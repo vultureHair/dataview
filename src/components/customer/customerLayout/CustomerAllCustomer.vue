@@ -74,7 +74,6 @@ export default {
         pagination: true, //开启分页（前端分页）
         paginationAutoPageSize: true, //根据网页高度自动分页（前端分页）
         onRowDoubleClicked: function(event) {
-          console.log(event.data);
           window.location.href =
             "/customerInfo?customer=" + event.data.customer;
         }

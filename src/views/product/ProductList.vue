@@ -3,7 +3,7 @@
     <h3>产品列表一览表</h3>
     <div
       id="GridCenter"
-      style="width: 100%;height: 300px;"
+      style="width: 100%;height: 650px;"
       class="ag-theme-balham"
     ></div>
   </div>
@@ -73,7 +73,7 @@ export default {
       let sessionPid = sessionStorage.getItem("pid");
 
       if (sessionPid == null) {
-        // this.pid = this.$route.query.product;
+        this.pid = this.$route.query.pid;
       } else {
         this.pid = sessionPid;
       }
@@ -84,7 +84,6 @@ export default {
         this.axios
           .get("/v1/ProductDetail/getproductdetaillist?product=" + this.pid)
           .then(response => {
-            console.log(response.data);
             this.tableData = response.data.data;
             this.initGrid();
           })

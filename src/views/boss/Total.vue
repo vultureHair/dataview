@@ -17,7 +17,7 @@
         <PieCustomerGrade></PieCustomerGrade>
       </div>
       <div class="brand">
-        <BrandTree></BrandTree>
+        <TreeLayout></TreeLayout>
       </div>
       <div class="product">
         <TotalEveryProduct></TotalEveryProduct>
@@ -36,7 +36,7 @@ import TopModel from "@/components/boss/TopModel";
 import TopStyle from "@/components/boss/TopStyle";
 import PieBrand from "@/components/boss/PieBrand";
 import PieCustomerGrade from "@/components/boss/PieCustomerGrade";
-import BrandTree from "@/components/brand/brandLayout/BrandTree";
+import TreeLayout from "@/components/boss/TreeLayout";
 import TotalEveryProduct from "@/components/product/productTendency/TotalEveryProduct";
 
 export default {
@@ -51,7 +51,7 @@ export default {
     TopStyle,
     PieBrand,
     PieCustomerGrade,
-    BrandTree,
+    TreeLayout,
     TotalEveryProduct
   }
 };
@@ -79,6 +79,7 @@ export default {
 .brand {
   border-bottom: 2px solid #000;
   padding: 10px;
+  position: relative;
 }
 .product {
   padding: 10px;

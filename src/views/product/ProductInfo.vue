@@ -1,6 +1,9 @@
 <template>
   <div class="con">
-    <HistoryView class="left"></HistoryView>
+    <div class="left">
+      <HistoryView class="HistoryView"></HistoryView>
+      <SearchBtn class="SearchBtn"></SearchBtn>
+    </div>
     <div class="center">
       <ProductEchartsLine class="center-one"></ProductEchartsLine>
       <ProductSecond class="center-two"></ProductSecond>
@@ -8,7 +11,7 @@
         <ProductThird class="center-three-left"></ProductThird>
         <ProductForth></ProductForth>
       </div>
-      <ProductGrid></ProductGrid>
+      <ProductGrid class="ProductGrid"></ProductGrid>
     </div>
     <div class="right">
       <Picture class="right-one"></Picture>
@@ -28,6 +31,7 @@ import SalesGrid from "@/components/product/productInfo/right/SalesGrid";
 import Info from "@/components/product/productInfo/right/Info";
 import HistoryView from "@/components/publicCom/HistoryView";
 import ProductGrid from "@/components/product/productInfo/center/ProductGrid";
+import SearchBtn from "@/components/product/productInfo/left/SearchBtn";
 
 export default {
   name: "ProductInfo",
@@ -40,7 +44,8 @@ export default {
     ProductThird,
     ProductForth,
     HistoryView,
-    ProductGrid
+    ProductGrid,
+    SearchBtn
   }
 };
 </script>
@@ -75,7 +80,7 @@ export default {
 
 .right-two {
   border-bottom: 1px solid #000;
-  height: 200px;
+  height: 211px;
 }
 
 .center-three {
@@ -90,5 +95,18 @@ export default {
 
 .right-three {
   height: 500px;
+}
+
+.ProductGrid {
+  position: relative;
+}
+
+.SearchBtn {
+  position: relative;
+}
+
+.HistoryView {
+  height: 514px;
+  border-bottom: 1px solid #000;
 }
 </style>
