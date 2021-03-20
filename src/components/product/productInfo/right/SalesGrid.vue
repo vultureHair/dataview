@@ -4,7 +4,7 @@
     <p class="showData">（显示最新20条数据）</p>
     <div
       id="GridCenter"
-      style="width: 100%;height: 380px;"
+      style="width: 100%;height: 410px;"
       class="ag-theme-balham"
     ></div>
   </div>
@@ -58,7 +58,7 @@ export default {
 
       this.axios
         .get(
-          "/v1/ProductDetail/GetProductDetailSales?barCode=" +
+          this.GLOBAL.urlHead + "ProductDetail/GetProductDetailSales?barCode=" +
             this.barCode
         )
         .then(response => {

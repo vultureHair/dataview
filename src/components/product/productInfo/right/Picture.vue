@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div style="height:200px;padding:20px">
-      <img v-if="path" :src="path" alt="暂无图片" />
+    <div style="height:280px;padding:20px 20px 0 20px">
+      <img v-if="path" :src="path" alt="暂无图片" width="100%" height="100%" />
     </div>
     <h4 v-if="PName">{{ PName }}</h4>
   </div>
@@ -12,7 +12,7 @@ export default {
   name: "Picture",
   data() {
     return {
-      path: "",
+      path: "https://resource.2valor.com/oservice/",
       PName: "",
       barCode: ""
     };
@@ -39,11 +39,10 @@ export default {
 
       this.axios
         .get(
-          "/v1/ProductDetail/GetProductDetailPicture?barCode=" +
-            this.barCode
+          this.GLOBAL.urlHead + "ProductDetail/GetProductDetailPicture?barCode=" + this.barCode
         )
         .then(response => {
-          this.path = response.data.data[0].Path;
+          this.path = this.path + response.data.data[0].Path;
           this.PName = response.data.data[0].PName;
         })
         .catch(function(error) {

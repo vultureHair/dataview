@@ -33,6 +33,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "prettier": "^1.19.1",
     "vue-easytable": "^1.7.2",
+    "vue-i18n": "^8.22.4",
     "vue-template-compiler": "^2.6.11"
   }
 }

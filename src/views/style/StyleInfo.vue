@@ -2,12 +2,15 @@
   <div class="con">
     <HistoryView class="left"></HistoryView>
     <div class="center">
-      <StyleInfoEcharts class="StyleInfoEcharts"></StyleInfoEcharts>
-      <StyleProductTop class="StyleProductTop"></StyleProductTop>
+      <StyleInfoEcharts
+        class="StyleInfoEcharts"
+        @day="getDay"
+      ></StyleInfoEcharts>
+      <StyleProductTop :day="day" class="StyleProductTop"></StyleProductTop>
       <StyleGrid class="StyleGrid"></StyleGrid>
     </div>
     <div class="right">
-      <StylePicture></StylePicture>
+      <StylePicture :day="day"></StylePicture>
     </div>
   </div>
 </template>
@@ -27,6 +30,16 @@ export default {
     StyleGrid,
     StylePicture,
     HistoryView
+  },
+  data() {
+    return {
+      day: "90"
+    };
+  },
+  methods: {
+    getDay(data) {
+      this.day = data;
+    }
   }
 };
 </script>

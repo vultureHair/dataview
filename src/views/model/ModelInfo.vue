@@ -2,12 +2,15 @@
   <div class="con">
     <HistoryView class="left"></HistoryView>
     <div class="center">
-      <ModelInfoEcharts class="ModelInfoEcharts"></ModelInfoEcharts>
-      <ModelProductTop class="ModelProductTop"></ModelProductTop>
+      <ModelInfoEcharts
+        class="ModelInfoEcharts"
+        @day="getDay"
+      ></ModelInfoEcharts>
+      <ModelProductTop :day="day" class="ModelProductTop"></ModelProductTop>
       <ModelGrid class="ModelGrid"></ModelGrid>
     </div>
     <div class="right">
-      <ModelPicture></ModelPicture>
+      <ModelPicture :day="day"></ModelPicture>
     </div>
   </div>
 </template>
@@ -27,6 +30,16 @@ export default {
     ModelGrid,
     ModelPicture,
     HistoryView
+  },
+  data() {
+    return {
+      day: "90"
+    };
+  },
+  methods: {
+    getDay(data) {
+      this.day = data;
+    }
   }
 };
 </script>

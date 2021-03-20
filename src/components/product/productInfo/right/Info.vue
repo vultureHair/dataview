@@ -1,9 +1,8 @@
 <template>
   <div>
-    <h4>统计周期：180天</h4>
     <h4>条形码：{{ barCode }}</h4>
-    <h4>累积销量：{{ salesVolume }}</h4>
-    <h4>销售额：{{ salesPrice | globalMoney }}</h4>
+    <h4>累积总销量：{{ salesVolume }}</h4>
+    <h4>累积总销售额：{{ salesPrice | globalMoney }}</h4>
   </div>
 </template>
 
@@ -33,10 +32,7 @@ export default {
       }
 
       this.axios
-        .get(
-          "/v1/ProductDetail/GetProductDetailAmount?barCode=" +
-            this.barCode
-        )
+        .get(this.GLOBAL.urlHead + "ProductDetail/GetProductDetailAmount?barCode=" + this.barCode)
         .then(response => {
           this.salesVolume = response.data.data[0].salesVolume;
           this.salesPrice = response.data.data[0].salesPrice;

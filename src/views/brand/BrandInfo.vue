@@ -2,12 +2,19 @@
   <div class="con">
     <HistoryView class="left"></HistoryView>
     <div class="center">
-      <BrandInfoEcharts class="BrandInfoEcharts"></BrandInfoEcharts>
-      <BrandProductTop class="BrandProductTop"></BrandProductTop>
+      <BrandInfoEcharts
+        class="BrandInfoEcharts"
+        @day="getDay"
+      ></BrandInfoEcharts>
+      <BrandProductTop
+        :day="day"
+        class="BrandProductTop"
+        @day="getDay"
+      ></BrandProductTop>
       <BrandGrid class="BrandGrid"></BrandGrid>
     </div>
     <div class="right">
-      <BrandPicture></BrandPicture>
+      <BrandPicture :day="day"></BrandPicture>
     </div>
   </div>
 </template>
@@ -27,6 +34,16 @@ export default {
     BrandGrid,
     BrandPicture,
     HistoryView
+  },
+  data() {
+    return {
+      day: "90"
+    };
+  },
+  methods: {
+    getDay(data) {
+      this.day = data;
+    }
   }
 };
 </script>

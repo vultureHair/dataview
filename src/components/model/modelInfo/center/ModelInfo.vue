@@ -1,233 +1,259 @@
 <template>
-  <div>
-    <div class="container-btn">
-      <div class="switchDayCount">
-        <span>切换时间：</span>
-        <select id="dayCount" class="" @change="changeDay()">
-          <option value="180">最近半年（默认）</option>
-          <option value="30">最近一月</option>
-          <option value="90">最近三月</option>
-          <option value="365">最近一年</option>
-        </select>
-      </div>
-      <div class="switchDayCount">
-        <span>切换周期：</span>
-        <select id="dayPeriod" class="" @change="changePeriod()">
-          <option value="day">天（默认）</option>
-          <option value="week">周</option>
-          <option value="month">月</option>
-          <option value="season">季</option>
-          <option value="year">年</option>
-        </select>
-      </div>
+    <div>
+        <div class="container-btn">
+            <div class="switchDayCount">
+                <span>{{ $t("product.info.switchTime") }}</span>
+                <select id="dayCount" class="" @change="changeOption()">
+                    <option value="1">{{ $t("product.info.switchInfo") }}</option>
+                    <option value="4">{{ $t("product.info.switchInfo1") }}</option>
+                    <option value="8">{{ $t("product.info.switchInfo2") }}</option>
+                    <option value="2">{{ $t("product.info.switchInfo3") }}</option>
+                    <option value="3">{{ $t("product.info.switchInfo4") }}</option>
+                    <option value="5">{{ $t("product.info.switchInfo5") }}</option>
+                    <option value="6">{{ $t("product.info.switchInfo6") }}</option>
+                    <option value="7">{{ $t("product.info.switchInfo7") }}</option>
+                    <option value="10">{{ $t("product.info.switchInfo8") }}</option>
+                </select>
+            </div>
+        </div>
+        <div id="productEchart" ref="echartId" style="width: 100%;height:500px;"></div>
     </div>
-    <div
-      id="productEchart"
-      ref="echartId"
-      style="width: 100%;height:500px;"
-    ></div>
-  </div>
 </template>
 
 <script>
 import $ from "jquery";
 
 export default {
-  name: "ModelInfoEchart",
-  data() {
-    return {
-      option: {
-        color: ["#3398DB", "#3398DB"],
-        title: {
-          text: "",
-          left: "center",
-          top: "10px"
-        },
-        tooltip: {
-          trigger: "axis"
-        },
-        axisPointer: {
-          link: { xAxisIndex: "all" }
-        },
-        toolbox: {
-          orient: "vertical",
-          top: "30",
-          right: "5",
-          feature: {
-            dataZoom: {
-              yAxisIndex: "none"
+    name: "ModelInfoEchart",
+    data() {
+        return {
+            option: {
+                color: ["#3398DB", "#3398DB"],
+                title: {
+                    text: "",
+                    left: "center",
+                    top: "10px"
+                },
+                tooltip: {
+                    trigger: "axis"
+                },
+                axisPointer: {
+                    link: { xAxisIndex: "all" }
+                },
+                toolbox: {
+                    orient: "vertical",
+                    top: "30",
+                    right: "5",
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: "none"
+                        },
+                        magicType: {
+                            type: ["line", "bar"]
+                        },
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                dataZoom: [
+                    {
+                        show: true,
+                        start: 0,
+                        end: 100,
+                        xAxisIndex: [0, 1]
+                    }
+                ],
+                xAxis: [
+                    {
+                        type: "category",
+                        name: this.$t("product.tendency.ShipDate"),
+                        data: [],
+                        large: true, //开启渐进式优化，largeThreshold为每帧至多渲染数据量
+                        largeThreshold: 500
+                    },
+                    {
+                        type: "category",
+                        name: this.$t("product.tendency.ShipDate"),
+                        data: [],
+                        large: true, //开启渐进式优化，largeThreshold为每帧至多渲染数据量
+                        largeThreshold: 500,
+                        gridIndex: 1
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: "value",
+                        name: this.$t("product.tendency.salesQuantity")
+                    },
+                    {
+                        type: "value",
+                        name: this.$t("product.tendency.salesAmount"),
+                        gridIndex: 1
+                    }
+                ],
+                grid: [
+                    {
+                        bottom: "60%"
+                    },
+                    {
+                        top: "60%"
+                    }
+                ],
+                series: [
+                    {
+                        name: this.$t("product.tendency.salesQuantity"),
+                        data: [],
+                        type: "line"
+                    },
+                    {
+                        name: this.$t("product.tendency.salesAmount"),
+                        data: [],
+                        type: "line",
+                        xAxisIndex: 1,
+                        yAxisIndex: 1
+                    }
+                ]
             },
-            dataView: {},
-            magicType: {
-              type: ["line", "bar"]
-            },
-            restore: {},
-            saveAsImage: {}
-          }
-        },
-        dataZoom: [
-          {
-            show: true,
-            start: 0,
-            end: 100,
-            xAxisIndex: [0, 1]
-          }
-        ],
-        xAxis: [
-          {
-            type: "category",
-            name: "销售日期",
-            data: [],
-            large: true, //开启渐进式优化，largeThreshold为每帧至多渲染数据量
-            largeThreshold: 500
-          },
-          {
-            type: "category",
-            name: "销售日期",
-            data: [],
-            large: true, //开启渐进式优化，largeThreshold为每帧至多渲染数据量
-            largeThreshold: 500,
-            gridIndex: 1
-          }
-        ],
-        yAxis: [
-          {
-            type: "value",
-            name: "销量"
-          },
-          {
-            type: "value",
-            name: "销售额",
-            gridIndex: 1
-          }
-        ],
-        grid: [
-          {
-            bottom: "60%"
-          },
-          {
-            top: "60%"
-          }
-        ],
-        series: [
-          {
-            name: "销量",
-            data: [],
-            type: "line"
-          },
-          {
-            name: "销售额",
-            data: [],
-            type: "line",
-            xAxisIndex: 1,
-            yAxisIndex: 1
-          }
-        ]
-      },
-      model: "",
-      dayCount: 180,
-      period: "day"
-    };
-  },
-  created() {
-    this.getData();
-  },
-  beforeDestroy() {
-    window.removeEventListener("resize", function() {});
-
-    var echarts = require("echarts");
-    var myChart = echarts.init(this.$refs.echartId);
-    myChart.clear();
-  },
-  methods: {
-    initEcharts() {
-      var echarts = require("echarts");
-      var myChart = echarts.init(this.$refs.echartId);
-      myChart.clear();
-      myChart.setOption(this.option);
-
-      $(window).resize(function() {
-        myChart.resize();
-      });
+            model: "",
+            dayCount: "90",
+            period: "day"
+        };
     },
-    getData() {
-      this.model = this.$route.query.model;
+    created() {
+        this.getData();
+    },
+    beforeDestroy() {
+        window.removeEventListener("resize", function() {});
 
-      if (!this.model) {
-        let sessionmodel = sessionStorage.getItem("model");
+        var echarts = require("echarts");
+        var myChart = echarts.init(this.$refs.echartId);
+        myChart.clear();
+    },
+    methods: {
+        initEcharts() {
+            var echarts = require("echarts");
+            var myChart = echarts.init(this.$refs.echartId);
+            myChart.clear();
+            myChart.setOption(this.option);
 
-        if (
-          // sessionmodel != null ||
-          sessionmodel != undefined
-        ) {
-          this.model = sessionmodel;
+            $(window).resize(function() {
+                myChart.resize();
+            });
+        },
+        getData() {
+            this.model = this.$route.query.model;
+
+            if (!this.model) {
+                let sessionmodel = sessionStorage.getItem("model");
+
+                if (
+                    // sessionmodel != null ||
+                    sessionmodel != undefined
+                ) {
+                    this.model = sessionmodel;
+                }
+            }
+            this.axios
+                .get(
+                    this.GLOBAL.urlHead +
+                        "ModelDetail/GetModelSalesDetail?model=" +
+                        this.model +
+                        "&dayCount=" +
+                        this.dayCount +
+                        "&period=" +
+                        this.period
+                )
+                .then(response => {
+                    this.option.xAxis[0].data.length = 0;
+                    this.option.xAxis[1].data.length = 0;
+                    this.option.series[0].data.length = 0;
+                    this.option.series[1].data.length = 0;
+
+                    for (let i = 0; i < response.data.data.length; i++) {
+                        this.option.xAxis[0].data[i] = response.data.data[i].date;
+                        this.option.xAxis[1].data[i] = response.data.data[i].date;
+                        this.option.series[0].data[i] = response.data.data[i].total;
+                        this.option.series[1].data[i] = response.data.data[i].price;
+                    }
+
+                    var this_ = this;
+                    if (response.data.data.length > 0) {
+                        this.option.title.text = this.option.title.text =
+                            this.model + this_.$t("model.info.lineTitle");
+                        // response.data.data[0].model + this_.$t("model.info.lineTitle");
+                    }
+
+                    sessionStorage.removeItem("model");
+                    sessionStorage.setItem("model", this.model);
+                    this.SetLocalStorage(5, this.model, this.model);
+                    this.initEcharts();
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+        changeOption() {
+            var mySelect = document.getElementById("dayCount");
+            var option = mySelect.options[mySelect.selectedIndex].value;
+
+            if (option == 1) {
+                this.dayCount = "90";
+                this.period = "day";
+            } else if (option == 2) {
+                this.dayCount = "90";
+                this.period = "week";
+            } else if (option == 3) {
+                this.dayCount = "180";
+                this.period = "week";
+            } else if (option == 4) {
+                this.dayCount = "180";
+                this.period = "month";
+            } else if (option == 5) {
+                this.dayCount = "365";
+                this.period = "week";
+            } else if (option == 6) {
+                this.dayCount = "365";
+                this.period = "month";
+            } else if (option == 7) {
+                this.dayCount = "365";
+                this.period = "season";
+            } else if (option == 8) {
+                this.dayCount = "1095";
+                this.period = "month";
+            } else if (option == 9) {
+                this.dayCount = "1095";
+                this.period = "season";
+            } else if (option == 10) {
+                this.dayCount = "1095";
+                this.period = "year";
+            } else if (option == 11) {
+                this.dayCount = "3650";
+                this.period = "year";
+            } else {
+                this.dayCount = "90";
+                this.period = "day";
+            }
+
+            this.$emit("day", this.dayCount);
+            this.getData();
         }
-      }
-      this.axios
-        .get(
-          "/v1/ModelDetail/GetModelSalesDetail?model=" +
-            this.model +
-            "&dayCount=" +
-            this.dayCount +
-            "&period=" +
-            this.period
-        )
-        .then(response => {
-          this.option.xAxis[0].data.length = 0;
-          this.option.xAxis[1].data.length = 0;
-          this.option.series[0].data.length = 0;
-          this.option.series[1].data.length = 0;
-
-          for (let i = 0; i < response.data.data.length; i++) {
-            this.option.xAxis[0].data[i] = response.data.data[i].date;
-            this.option.xAxis[1].data[i] = response.data.data[i].date;
-            this.option.series[0].data[i] = response.data.data[i].total;
-            this.option.series[1].data[i] = response.data.data[i].price;
-          }
-
-          if (response.data.data.length > 0) {
-            this.option.title.text =
-              response.data.data[0].model + "型号销量——销售走势图";
-          }
-
-          sessionStorage.removeItem("model");
-          sessionStorage.setItem("model", this.model);
-          this.SetLocalStorage(5, this.model, this.model);
-          this.initEcharts();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    changeDay() {
-      var mySelect = document.getElementById("dayCount");
-      this.dayCount = mySelect.options[mySelect.selectedIndex].value;
-
-      this.getData();
-    },
-    changePeriod() {
-      var mySelect = document.getElementById("dayPeriod");
-      this.period = mySelect.options[mySelect.selectedIndex].value;
-
-      this.getData();
     }
-  }
 };
 </script>
 
 <style scoped>
 .inDayCount {
-  width: 150px;
+    width: 150px;
 }
 .container-btn {
-  text-align: left;
-  padding-top: 5px;
+    text-align: left;
+    padding-top: 5px;
 }
 
 .switchDayCount {
-  height: 30px;
-  padding-left: 10px;
-  display: inline;
-  padding-right: 10px;
+    height: 30px;
+    padding-left: 10px;
+    display: inline;
+    padding-right: 10px;
 }
 </style>
