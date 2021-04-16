@@ -164,7 +164,11 @@ export default {
         },
         getData() {
             this.axios
-                .get(this.GLOBAL.urlHead + "ProductTotalTendency/GetProductEveryTotal?days=" + this.days)
+                .get(
+                    this.GLOBAL.urlHead +
+                        "ProductTotalTendency/GetProductEveryTotal?days=" +
+                        this.days
+                )
                 .then(response => {
                     let tempData = response.data.data;
                     let totalPercent = 0;

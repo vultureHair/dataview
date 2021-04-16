@@ -19,7 +19,53 @@ export default {
                 tooltip: {
                     trigger: "axis",
                     axisPointer: {
-                        type: "cross"
+                        type: "cross",
+                        label: {
+                            formatter: function(params) {
+                                let year = String(params.value).substr(0, 4);
+                                let week = String(params.value).substr(4, 2);
+
+                                function getNextDate(nowDate, weekDay) {
+                                    // 0是星期日,1是星期一,...
+                                    weekDay %= 7;
+                                    var day = nowDate.getDay();
+                                    var time = nowDate.getTime();
+                                    var sub = weekDay - day;
+                                    if (sub <= 0) {
+                                        sub += 7;
+                                    }
+                                    time += sub * 24 * 3600000;
+                                    nowDate.setTime(time);
+                                    return nowDate;
+                                }
+
+                                function getXDate(year, weeks, weekDay) {
+                                    // 用指定的年构造一个日期对象，并将日期设置成这个年的1月1日
+                                    // 因为计算机中的月份是从0开始的,所以有如下的构造方法
+                                    var date = new Date(year, "0", "1");
+                                    // 取得这个日期对象 date 的长整形时间 time
+                                    var time = date.getTime();
+                                    // 将这个长整形时间加上第N周的时间偏移
+                                    // 因为第一周就是当前周,所以有:weeks-1,以此类推
+                                    // 7*24*3600000 是一星期的时间毫秒数,(JS中的日期精确到毫秒)
+                                    time += (weeks - 1) * 7 * 24 * 3600000;
+                                    // 为日期对象 date 重新设置成时间 time
+                                    date.setTime(time);
+                                    return getNextDate(date, weekDay);
+                                }
+
+                                //将标准时间转换为只包含年月日的时间格式
+                                let date = getXDate(year, week, 7);
+                                var y = date.getFullYear();
+                                var m = date.getMonth() + 1;
+                                m = m < 10 ? "0" + m : m;
+                                var d = date.getDate();
+                                d = d < 10 ? "0" + d : d;
+                                let time = y + "-" + m + "-" + d;
+
+                                return time + "";
+                            }
+                        }
                     }
                 },
                 toolbox: {

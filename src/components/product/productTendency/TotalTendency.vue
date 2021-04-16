@@ -41,7 +41,7 @@ export default {
                             yAxisIndex: "none"
                         },
                         magicType: {
-                            type: ["line", "bar"]
+                            type: ["bar"]
                         },
                         restore: {},
                         saveAsImage: {}

@@ -6,7 +6,7 @@
 import $ from "jquery";
 
 export default {
-    name: "ProductForth",
+    name: "ProductThird",
     data() {
         return {
             barCode: "",
@@ -36,9 +36,8 @@ export default {
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
                 legend: {
-                    show: false,
                     orient: "vertical", //horizontal
-                    left: "10", //left center right
+                    left: "0", //left center right
                     data: []
                 },
                 series: [
@@ -84,7 +83,7 @@ export default {
             this.axios
                 .get(
                     this.GLOBAL.urlHead +
-                        "ProductDetail/getsalequantitybybarcodePie?barCode=" +
+                        "ProductDetail/getsalequantitybybarcode?barCode=" +
                         this.barCode
                 )
                 .then(response => {
@@ -109,10 +108,6 @@ export default {
 
             $(window).resize(function() {
                 myChart.resize();
-            });
-
-            myChart.on("dblclick", function(param) {
-                location.href = "/#/customerInfo?customer=" + param.name;
             });
         }
     }

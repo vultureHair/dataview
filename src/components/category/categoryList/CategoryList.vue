@@ -100,7 +100,7 @@ export default {
                 .catch(function(error) {
                     console.log(error);
                 });
-
+            this.total = this.sortByKey(this.total, "Quantity");
             this.initGrid();
         },
         initGrid() {
@@ -180,6 +180,13 @@ export default {
             var eGridDiv = document.querySelector("#GridCategoryList");
             // eslint-disable-next-line no-undef
             new agGrid.Grid(eGridDiv, gridOptions);
+        },
+        sortByKey(array, key) {
+            return array.sort(function(a, b) {
+                var x = a[key];
+                var y = b[key];
+                return x > y ? -1 : x < y ? 1 : 0;
+            });
         }
     }
 };

@@ -48,6 +48,7 @@
                 $t("navMenu.customerTendency")
             }}</el-menu-item>
         </el-submenu>
+        <el-menu-item index="/attribute">{{ $t("attribute.attribute") }}</el-menu-item>
         <el-menu-item>{{ $t("navMenu.webSiteLog") }}</el-menu-item>
     </el-menu>
 </template>

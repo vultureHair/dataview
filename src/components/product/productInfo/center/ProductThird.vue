@@ -4,63 +4,96 @@
 
 <script>
 import $ from "jquery";
+var echarts = require("echarts");
+var colors = ["#C33531", "#64BD3D", "#EE9201", "#29AAE3", "#B74AE5", "#0AAF9F", "#E89589"];
 
 export default {
-    name: "ProductThird",
+    name: "TopGrade",
     data() {
         return {
             barCode: "",
-            optionPie: {
-                color: [
-                    "#C33531",
-                    "#64BD3D",
-                    "#EE9201",
-                    "#29AAE3",
-                    "#B74AE5",
-                    "#0AAF9F",
-                    "#E89589",
-                    "#6F3FE1",
-                    "#5781FD",
-                    "#4DB1CB",
-                    "#3EBD7C",
-                    "#F7A925",
-                    "#bda29a"
-                ],
+            option: {
                 title: {
-                    text: this.$t("product.info.pieTitleCustomerGrade"),
+                    text: this.$t("product.info.customerTop10"),
                     left: "center",
                     top: 10
                 },
                 tooltip: {
-                    trigger: "item",
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "cross"
+                    },
+                    backgroundColor: "rgba(245, 245, 245, 0.8)",
+                    borderWidth: 1,
+                    borderColor: "#ccc",
+                    padding: 10,
+                    textStyle: {
+                        color: "#000"
+                    }
                 },
-                legend: {
-                    orient: "vertical", //horizontal
-                    left: "0", //left center right
-                    data: []
+                toolbox: {
+                    orient: "vertical",
+                    show: true,
+                    feature: {
+                        saveAsImage: {
+                            show: true
+                        }
+                    }
                 },
+                xAxis: [
+                    {
+                        type: "category",
+                        axisLabel: {
+                            interval: 0,
+                            rotate: 15
+                        },
+                        data: []
+                    },
+                    {
+                        show: false,
+                        type: "category",
+                        data: [
+                            "Top1",
+                            "Top2",
+                            "Top3",
+                            "Top4",
+                            "Top5",
+                            "Top6",
+                            "Top7",
+                            "Top8",
+                            "Top9",
+                            "Top10"
+                        ]
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: "value",
+                        name: this.$t("product.info.orderQty"),
+                        boundaryGap: [0, 0.1],
+                        splitLine: false
+                    }
+                ],
                 series: [
                     {
                         name: this.$t("product.info.orderQty"),
-                        type: "pie",
-                        radius: "65%",
-                        center: ["50%", "55%"],
-                        minAngle: 5,
-                        label: {
-                            show: false
-                        },
-                        labelLine: {
-                            show: false
-                        },
-                        data: "",
-                        emphasis: {
-                            itemStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: "rgba(0, 0, 0, 0.5)"
+                        type: "bar",
+                        itemStyle: {
+                            normal: {
+                                color: function(obj) {
+                                    if (obj.dataIndex >= 0) {
+                                        return colors[obj.dataIndex];
+                                    }
+                                },
+                                barBorderWidth: 0,
+                                barBorderRadius: 1,
+                                label: {
+                                    show: false,
+                                    position: "insideTop"
+                                }
                             }
-                        }
+                        },
+                        data: []
                     }
                 ]
             }
@@ -69,50 +102,53 @@ export default {
     created() {
         this.getData();
     },
+    mounted() {},
     beforeDestroy() {
         window.removeEventListener("resize", function() {});
 
-        var echarts = require("echarts");
         var myChart = echarts.init(this.$refs.echartId);
         myChart.clear();
     },
     methods: {
+        initEcharts() {
+            var myChart = echarts.init(this.$refs.echartId);
+            myChart.setOption(this.option);
+
+            $(window).resize(function() {
+                myChart.resize();
+            });
+
+            // myChart.on("dblclick", function(param) {
+            //     location.href = "/#/modelInfo?model=" + param.name;
+            // });
+        },
         getData() {
             this.GetBarcode();
 
             this.axios
-                .get(this.GLOBAL.urlHead + "ProductDetail/getsalequantitybybarcode?barCode=" + this.barCode)
+                .get(
+                    this.GLOBAL.urlHead +
+                        "ProductDetail/getsalequantitybybarcodePie?barCode=" +
+                        this.barCode
+                )
                 .then(response => {
-                    let tempData = response.data.data;
-
-                    for (let i = 0; i < tempData.length; i++) {
-                        this.optionPie.legend.data[i] = tempData[i].name;
+                    for (let i = 0; i < response.data.data.length && i < 10; i++) {
+                        this.option.xAxis[0].data[i] = response.data.data[i].pet;
+                        this.option.series[0].data[i] = response.data.data[i].value;
                     }
-
-                    this.optionPie.series[0].data = tempData;
 
                     this.initEcharts();
                 })
                 .catch(function(error) {
                     console.log(error);
                 });
-        },
-        initEcharts() {
-            var echarts = require("echarts");
-            var myChart = echarts.init(this.$refs.echartId);
-            myChart.setOption(this.optionPie);
-
-            $(window).resize(function() {
-                myChart.resize();
-            });
         }
     }
 };
 </script>
 
 <style scoped>
-.switchButton {
-    padding: 10px 20px 0 20px;
-    text-align: left;
+.inDayCount {
+    width: 150px;
 }
 </style>

@@ -3,10 +3,10 @@
         <div class="switchDayCount">
             <span>{{ $t("product.info.switchTime") }}</span>
             <select id="barDayCount" class="" @change="changeDay()">
-                <option value="30">{{ $t("product.tendency.switchInfo3") }}</option>
-                <option value="90">{{ $t("product.tendency.switchInfo4") }}</option>
-                <option value="180">{{ $t("product.tendency.switchInfo5") }}</option>
-                <option value="365">{{ $t("product.tendency.switchInfo6") }}</option>
+                <option value="30">{{ $t("boss.switchTimeInfo") }}</option>
+                <option value="90">{{ $t("boss.switchTimeInfo1") }}</option>
+                <option value="180">{{ $t("boss.switchTimeInfo2") }}</option>
+                <option value="365">{{ $t("boss.switchTimeInfo3") }}</option>
             </select>
         </div>
         <div id="BarEchart" ref="echartId" style="width: 100%;height:300px;"></div>
@@ -104,7 +104,11 @@ export default {
         },
         getData() {
             this.axios
-                .get(this.GLOBAL.urlHead + "CategoryLayout/getCategorySalesBar?dayCount=" + this.dayCount)
+                .get(
+                    this.GLOBAL.urlHead +
+                        "CategoryLayout/getCategorySalesBar?dayCount=" +
+                        this.dayCount
+                )
                 .then(response => {
                     for (let i = 0; i < response.data.data.length; i++) {
                         this.option.series[0].data[i] = response.data.data[i].quantity;

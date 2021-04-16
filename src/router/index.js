@@ -5,6 +5,11 @@ Vue.use(VueRouter);
 
 const routes = [
     {
+        path: "/login",
+        name: "Login",
+        component: () => import("../components/publicCom/Login.vue")
+    },
+    {
         path: "/",
         redirect: "/total"
     },
@@ -102,6 +107,11 @@ const routes = [
         path: "/total",
         name: "Total",
         component: () => import("../views/boss/Total.vue")
+    },
+    {
+        path: "/attribute",
+        name: "Attribute",
+        component: () => import("../views/attribute/Attribute.vue")
     }
 ];
 
@@ -109,6 +119,27 @@ const router = new VueRouter({
     routes,
     mode: "hash"
     // base: process.env.BASE_URL
+});
+
+router.beforeEach((to, from, next) => {
+    let token = window.sessionStorage.getItem("token");
+    if (to.path != "/login" && !token) {
+        next({
+            path: "/login"
+        });
+    } else {
+        if (to.path == "/login" && token) {
+            if (token == "true") {
+                next("/");
+            } else {
+                next({
+                    path: "/login"
+                });
+            }
+        } else {
+            next();
+        }
+    }
 });
 
 export default router;

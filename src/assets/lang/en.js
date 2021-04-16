@@ -2,6 +2,9 @@ module.exports = {
     header: {
         title: "Data visualization system of Mopai Technology"
     },
+    login: {
+        login: "login"
+    },
     navMenu: {
         proItem: "Product Analysis",
         proList: "Product List ",
@@ -42,7 +45,7 @@ module.exports = {
         yearChart: "Year Sales Chart",
         hotModel: "Top10 Hot Model",
         hotStyle: "Top10 Hot Style",
-        hotSmallTitle: "(Nearly three months)",
+        hotSmallTitle: "(Nearly six months)",
         yNumber: "Quantity",
         inputInfo: "Please enter the number of days under four digits",
         switchTime: "SwitchTime:",
@@ -51,9 +54,10 @@ module.exports = {
         switchTimeInfo2: "nearly half year",
         switchTimeInfo3: "nearly one year",
         switchTimeInfo4: "nearly three year",
+        switchTimehistory: "all products",
         buttonInfo1: "confirm",
         pieTitleBrand: "Brand sales ratio chart",
-        pieTitleCustomerGrade: "Customer-level ordering chart",
+        pieTitleCustomerGrade: "Customer ordering chart",
         pieTitleTreeLayout: "Rectangular tree diagram of sales details",
         category: "category",
         brand: "brand",
@@ -68,10 +72,13 @@ module.exports = {
             barcode: "Barcode",
             proName: "name",
             inventory: "inventory",
-            imgCount: "imgCount",
+            AddDate: "Add Date",
             salesQuantity: "salesQuantity",
             brand: "brand",
-            categoryName: "category"
+            categoryName: "category",
+            weekSales: "week salesQuantity",
+            monthSales: "month salesQuantity",
+            yearSales: "year salesQuantity"
         },
         info: {
             lineTitle: "Product Sales Chart",
@@ -90,7 +97,18 @@ module.exports = {
             switchInfo8: "year",
             pieTitleCustomerGrade: "Customer-level ordering chart",
             orderQty: "Order Qty",
-            orderRatio: "Order Ratio"
+            orderRatio: "Order Ratio",
+            Barcode: "Barcode",
+            CumulativeSalesNumber: "Cumulative Quantity",
+            CumulativeSalesMoney: "Cumulative Amount",
+            CumulativeProfit: "Cumulative profit",
+            salesList: "Product sales list",
+            salesData20: "Displays the latest 100 pieces of data",
+            salesListRelevance: "Product association list",
+            salesData180: "Displays the latest 180 day data",
+            CumulativeCustomer: "Cumulative Customer",
+            CumulativeOrder: "Cumulative Order",
+            customerTop10: "Customer Order Top 10"
         },
         tendency: {
             lineTitle: "Product Total Sales Chart",
@@ -211,7 +229,16 @@ module.exports = {
             orderQuantity: "order quantity",
             orderAccount: "order account($)",
             topTitle: "Top30 Order Chart",
-            order: "order"
+            totalProfit: "profit",
+            orderDate: "order date",
+            Name: "name",
+            Email: "email",
+            Customer_Price_Group: "grade",
+            Description: "description",
+            Creation_Date: "registration date",
+            tableTitle: "customer order details",
+            Unit_Price: "unit price",
+            Unit_Cost: "unit cost"
         },
         layout: {
             title: "Customer Order Grid",
@@ -228,6 +255,17 @@ module.exports = {
             ratio: "ratio(%)",
             gradeTitle: "Customer Grade Chart"
         }
+    },
+    attribute: {
+        attribute: "Attribute Analysis",
+        attributeTreeTitle: "Attribute Tree Map",
+        attributeName: "attribute name",
+        placeholder1: "Please select category",
+        placeholder2: "Please select style",
+        placeholder3: "Please select attribute type",
+        placeholder4: "Please select time",
+        search: "search",
+        noData: "No Data"
     },
     left: {
         history: "browsing history"

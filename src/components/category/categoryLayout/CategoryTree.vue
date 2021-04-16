@@ -3,10 +3,10 @@
         <div class="switchDayCount">
             <span>{{ $t("product.info.switchTime") }}</span>
             <select id="dayCount" class="switchOption" @change="changeDay()">
-                <option value="30">{{ $t("product.tendency.switchInfo3") }}</option>
-                <option value="90">{{ $t("product.tendency.switchInfo4") }}</option>
-                <option value="180">{{ $t("product.tendency.switchInfo5") }}</option>
-                <option value="365">{{ $t("product.tendency.switchInfo6") }}</option>
+                <option value="30">{{ $t("boss.switchTimeInfo") }}</option>
+                <option value="90">{{ $t("boss.switchTimeInfo1") }}</option>
+                <option value="180">{{ $t("boss.switchTimeInfo2") }}</option>
+                <option value="365">{{ $t("boss.switchTimeInfo3") }}</option>
             </select>
             <span class="salesTotal">{{ $t("category.layout.sales") }}：{{ salesTotal }}</span>
         </div>
@@ -75,7 +75,7 @@ export default {
                     {
                         name: this.$t("category.layout.salesStatus"),
                         type: "treemap",
-                        leafDepth: 1,
+                        // leafDepth: 1,
                         roam: "move",
                         label: {
                             formatter: function(a) {
@@ -119,17 +119,21 @@ export default {
                 myChart.resize();
             });
 
-            myChart.on("dblclick", function(param) {
-                if (param.data.children) {
-                    location.href = "/#/categoryInfo?categoryNameId=" + param.data.CategoryNameId;
-                } else {
-                    location.href = "/#/styleInfo?style=" + param.data.name;
-                }
-            });
+            // myChart.on("dblclick", function(param) {
+            //     if (param.data.children) {
+            //         location.href = "/#/categoryInfo?categoryNameId=" + param.data.CategoryNameId;
+            //     } else {
+            //         location.href = "/#/styleInfo?style=" + param.data.name;
+            //     }
+            // });
         },
         getData() {
             this.axios
-                .get(this.GLOBAL.urlHead + "CategoryLayout/getCategorySalesTree?dayCount=" + this.dayCount)
+                .get(
+                    this.GLOBAL.urlHead +
+                        "CategoryLayout/getCategorySalesTree?dayCount=" +
+                        this.dayCount
+                )
                 .then(response => {
                     this.option.series[0].data = response.data.data;
 

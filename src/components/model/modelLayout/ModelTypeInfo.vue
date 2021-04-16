@@ -41,7 +41,7 @@ export default {
                         show: true,
                         realtime: true,
                         start: 0,
-                        end: 10
+                        end: 5
                     }
                 ],
                 xAxis: {

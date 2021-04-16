@@ -1,11 +1,23 @@
 <template>
     <div>
         <h3>{{ $t("product.list.title") }}</h3>
+        <div class="switchDayCount">
+            <span>{{ $t("boss.switchTime") }}</span>
+            <select id="dayCount" class="" @change="changeDay()">
+                <option value="30">{{ $t("boss.switchTimeInfo") }}</option>
+                <option value="90">{{ $t("boss.switchTimeInfo1") }}</option>
+                <option value="180">{{ $t("boss.switchTimeInfo2") }}</option>
+                <option value="365">{{ $t("boss.switchTimeInfo3") }}</option>
+                <option value="5475">{{ $t("boss.switchTimehistory") }}</option>
+            </select>
+        </div>
         <div id="GridCenter" style="width: 100%;height: 650px;" class="ag-theme-balham"></div>
     </div>
 </template>
 
 <script>
+import $ from "jquery";
+
 export default {
     name: "ProductList",
     data() {
@@ -13,10 +25,16 @@ export default {
             tableData: "",
             pid: "",
             msgError: "",
+            dayCount: 30,
             columnsName: [
                 {
                     field: "PId",
                     headerName: this.$t("product.list.proId"),
+                    pinned: "left"
+                },
+                {
+                    field: "Barcode",
+                    headerName: this.$t("product.list.barcode"),
                     pinned: "left"
                 },
                 {
@@ -29,20 +47,28 @@ export default {
                     headerName: this.$t("product.list.proName")
                 },
                 {
-                    field: "Barcode",
-                    headerName: this.$t("product.list.barcode")
-                },
-                {
                     field: "SumTotalSalesAsDays",
                     headerName: this.$t("product.list.salesQuantity")
+                },
+                {
+                    field: "weekSales",
+                    headerName: this.$t("product.list.weekSales")
+                },
+                {
+                    field: "monthSales",
+                    headerName: this.$t("product.list.monthSales")
+                },
+                {
+                    field: "yearSales",
+                    headerName: this.$t("product.list.yearSales")
                 },
                 {
                     field: "inventory",
                     headerName: this.$t("product.list.inventory")
                 },
                 {
-                    field: "ProductImgCount",
-                    headerName: this.$t("product.list.imgCount")
+                    field: "AddDate",
+                    headerName: this.$t("product.list.AddDate")
                 },
                 {
                     field: "brand",
@@ -63,39 +89,19 @@ export default {
         sessionStorage.setItem("pid", this.pid);
     },
     methods: {
-        getDataa() {
-            let sessionPid = sessionStorage.getItem("pid");
-
-            if (sessionPid == null) {
-                this.pid = this.$route.query.pid;
-
-                if (this.pid == undefined) {
-                    this.pid =
-                        "123730_123600_123601_123602_123460_123603_123604_123605_123606_123607_123532_123608_123609_123533_123735_123599_123450_123451_123452_123531_123453_123454_123455_123456_123457_123458_123280_123281_123459_123842_123843_123844_123845_123846_123931_123932_123933_123934_123286_123287_123381_123734_123793_123840_123841_123857_123022_123023_123024_123029_123030_123053_123054_123055_123056_123057_123058_123059_122783_122784";
-                }
-            } else {
-                this.pid = sessionPid;
-            }
-
-            this.axios
-                .get(this.GLOBAL.urlHead + "ProductDetail/getproductdetaillist?product=" + this.pid)
-                .then(response => {
-                    this.tableData = response.data.data;
-                    this.initGrid();
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-        },
         getData() {
             let sessionPid = sessionStorage.getItem("pid");
 
             if (sessionPid == null || sessionPid == "undefined") {
                 this.pid = this.$route.query.pid;
                 if (this.pid == undefined) {
-                    //获取最近3月销售前100产品的数据
+                    //获取最近一年销售产品的数据
                     this.axios
-                        .get(this.GLOBAL.urlHead + "ProductDetail/getTopProductdetailList")
+                        .get(
+                            this.GLOBAL.urlHead +
+                                "ProductDetail/getTopProductdetailList?dayCount=" +
+                                this.dayCount
+                        )
                         .then(response => {
                             this.tableData = response.data.data;
                             this.initGrid();
@@ -123,6 +129,8 @@ export default {
             }
         },
         initGrid() {
+            $("#GridCenter").empty();
+
             var gridOptions = {
                 columnDefs: this.columnsName,
                 rowData: this.tableData,
@@ -139,7 +147,7 @@ export default {
                 },
                 pagination: true, //开启分页（前端分页）
                 paginationAutoPageSize: true, //根据网页高度自动分页（前端分页）
-                onRowClicked: function(event) {
+                onRowDoubleClicked: function(event) {
                     window.location.href =
                         "http://data.ivalor.com/#/productInfo?barCode=" +
                         event.data.Barcode +
@@ -149,6 +157,12 @@ export default {
             var eGridDiv = document.querySelector("#GridCenter");
             // eslint-disable-next-line no-undef
             new agGrid.Grid(eGridDiv, gridOptions);
+        },
+        changeDay() {
+            var mySelect = document.getElementById("dayCount");
+            this.dayCount = mySelect.options[mySelect.selectedIndex].value;
+
+            this.getData();
         }
     }
 };
@@ -160,5 +174,11 @@ h3 {
 }
 .ag-theme-balham {
     padding: 0 20px 0 20px;
+}
+
+.switchDayCount {
+    height: 30px;
+    padding-left: 10px;
+    display: table;
 }
 </style>

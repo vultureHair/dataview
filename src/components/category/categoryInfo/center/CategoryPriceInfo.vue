@@ -60,11 +60,13 @@ export default {
                 yAxis: [
                     {
                         type: "value",
-                        name: this.$t("product.info.salesQuantity")
+                        name: this.$t("product.info.salesQuantity"),
+                        splitLine: false
                     },
                     {
                         type: "value",
                         name: this.$t("product.info.salesQuantity"),
+                        splitLine: false,
                         show: false
                     }
                 ],

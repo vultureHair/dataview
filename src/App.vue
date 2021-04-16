@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <Title></Title>
-        <NavMenu></NavMenu>
+        <NavMenu v-if="show"></NavMenu>
         <el-main>
             <router-view></router-view>
         </el-main>
@@ -17,6 +17,22 @@ export default {
     components: {
         Title,
         NavMenu
+    },
+    data() {
+        return {
+            show: false
+        };
+    },
+    mounted() {
+        this.geth();
+    },
+    methods: {
+        geth() {
+            let root = window.sessionStorage.getItem("token");
+            if (root) {
+                this.show = root;
+            }
+        }
     }
 };
 </script>
@@ -29,6 +45,7 @@ export default {
     text-align: center;
     color: #2c3e50;
     min-width: 1000px;
+    height: 100%;
 }
 a {
     text-decoration: none;
@@ -36,5 +53,6 @@ a {
 .el-main {
     padding: 0 !important;
     border: 2px solid #000;
+    /* height: 100%; */
 }
 </style>

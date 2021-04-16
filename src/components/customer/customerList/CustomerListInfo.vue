@@ -1,143 +1,206 @@
 <template>
-    <ul>
-        <li class="li-con">
-            <div class="switchDayCount">
-                <span>{{ $t("style.list.switchTime") }}</span>
-                <select id="dayCount" class="" @change="changeOption()">
-                    <option value="1">{{ $t("style.list.switchInfo1") }}</option>
-                    <option value="5">{{ $t("style.list.switchInfo") }}</option>
-                    <option value="2">{{ $t("style.list.switchInfo2") }}</option>
-                    <option value="3">{{ $t("style.list.switchInfo3") }}</option>
-                    <option value="4">{{ $t("style.list.switchInfo4") }}</option>
-                </select>
-            </div>
-        </li>
-        <li
-            v-for="(customer, index) in customerList"
-            :key="customerKeys[index]"
-            class="cateListCustomer"
-            @click="loadcustomerInfo(customer.customer)"
-        >
-            <p :title="customer.customer">
-                <span class="customerID"> top{{ index + 1 }}: </span>
-                <span class="customerName">
-                    ({{ customer.orderTotal }}) &nbsp;&nbsp;{{ customer.Name }}
-                </span>
-            </p>
-        </li>
-    </ul>
+    <div class="container-grid">
+        <div id="GridModelList" class="ag-theme-balham grid"></div>
+    </div>
 </template>
 
 <script>
-import shortId from "shortid";
+import $ from "jquery";
 
 export default {
-    name: "CustomerListInfo",
+    name: "CustomerList",
     data() {
         return {
-            customerList: [],
-            customerKeys: [],
-            day: "90"
+            day: "",
+            week: "",
+            month: "",
+            amount: "",
+            period: 5,
+            total: [],
+            headerName: []
         };
     },
     created() {
         this.getData();
     },
     methods: {
-        loadcustomerInfo(params) {
-            this.$router.push({
-                path: "/customerInfo",
-                query: { customer: params }
-            });
-        },
-        getData() {
-            this.axios
-                .get(this.GLOBAL.urlHead + "CustomerList/getCustomerList?day=" + this.day)
+        async getData() {
+            //获取最近5天数据
+            await this.axios
+                .get(
+                    this.GLOBAL.urlHead +
+                        "CustomerSales/GetCustomerSaleByDate?datetype=1&num=" +
+                        this.period
+                )
                 .then(response => {
-                    this.customerList = [];
-                    this.customerKeys = [];
-
-                    this.customerList = response.data.data;
-                    this.customerKeys = this.customerList.map(() => shortId.generate());
+                    this.day = response.data.data;
+                    this.headerName = response.data.Order_Date;
                 })
                 .catch(function(error) {
                     console.log(error);
                 });
-        },
-        changeOption() {
-            var mySelect = document.getElementById("dayCount");
-            var option = mySelect.options[mySelect.selectedIndex].value;
 
-            if (option == 1) {
-                this.day = 90;
-            } else if (option == 2) {
-                this.day = 180;
-            } else if (option == 3) {
-                this.day = 365;
-            } else if (option == 4) {
-                this.day = 1095;
-            } else if (option == 5) {
-                this.day = 30;
-            } else {
-                this.day = 90;
+            //获取最近5周数据
+            await this.axios
+                .get(
+                    this.GLOBAL.urlHead +
+                        "CustomerSales/GetCustomerSaleByDate?datetype=2&num=" +
+                        this.period
+                )
+                .then(response1 => {
+                    this.week = response1.data.data;
+                    this.headerName = this.headerName.concat(response1.data.Order_Date);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+
+            //获取最近5月数据
+            await this.axios
+                .get(
+                    this.GLOBAL.urlHead +
+                        "CustomerSales/GetCustomerSaleByDate?datetype=3&num=" +
+                        this.period
+                )
+                .then(response => {
+                    this.month = response.data.data;
+                    this.headerName = this.headerName.concat(response.data.Order_Date);
+
+                    // let temp;
+                    // for (let i = 0; i < this.day.length; i++) {
+                    //     temp = Object.assign(this.day[i], this.amount[i]);
+                    //     this.total[i] = temp;
+                    // }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+
+            //获取产品历史累积销售数据
+            await this.axios
+                .get(this.GLOBAL.urlHead + "CustomerSales/GetCustomerSaleByDate")
+                .then(response => {
+                    this.amount = [];
+                    this.amount = response.data.data;
+
+                    let temp;
+                    for (let i = 0; i < this.day.length; i++) {
+                        temp = Object.assign(
+                            this.day[i],
+                            this.week[i],
+                            this.month[i],
+                            this.amount[i]
+                        );
+                        this.total[i] = temp;
+                    }
+                    this.headerName.push("Quantity");
+                    this.headerName.push("Id");
+                    this.headerName.push("Name");
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+
+            this.total = this.sortByKey(this.total, "Quantity");
+            this.initGrid();
+        },
+        initGrid() {
+            $("#GridCategoryList").empty();
+
+            let headLeft = [
+                {
+                    headerName: "",
+                    children: [
+                        { headerName: "id", field: "Id", pinned: "left" },
+                        { headerName: "name", field: "Name", pinned: "left" }
+                    ]
+                },
+                {
+                    headerName: "近" + this.period + "日",
+                    children: []
+                },
+                {
+                    headerName: "近" + this.period + "周",
+                    children: []
+                },
+                {
+                    headerName: "近" + this.period + "月",
+                    children: []
+                },
+                {
+                    headerName: "历史累积",
+                    field: "Quantity"
+                }
+            ];
+
+            for (let i = 0; i < this.period; i++) {
+                let temp = {
+                    field: this.headerName[i],
+                    headerName: this.headerName[i]
+                };
+                headLeft[1].children[i] = temp;
             }
 
-            this.getData();
+            for (let i = this.period; i < this.period * 2; i++) {
+                let temp = {
+                    field: this.headerName[i],
+                    headerName: this.headerName[i]
+                };
+                headLeft[2].children[i] = temp;
+            }
+
+            for (let i = this.period * 2; i < this.period * 3; i++) {
+                let temp = {
+                    field: this.headerName[i],
+                    headerName: this.headerName[i]
+                };
+                headLeft[3].children[i] = temp;
+            }
+
+            var gridOptions = {
+                columnDefs: headLeft,
+                rowData: this.total,
+                onGridReady: function() {
+                    //表格创建完成后执行的事件
+                    gridOptions.api.sizeColumnsToFit(); //调整表格大小自适应
+                },
+                defaultColDef: {
+                    editable: false, //单元表格是否可编辑
+                    enableValue: true,
+                    sortable: true, //开启排序
+                    resizable: true, //是否可以调整列大小，就是拖动改变列大小
+                    filter: true //开启刷选
+                },
+                pagination: true, //开启分页（前端分页）
+                paginationAutoPageSize: true, //根据网页高度自动分页（前端分页）
+                onRowDoubleClicked: function(event) {
+                    window.location.href =
+                        "http://data.ivalor.com/#/customerInfo?customer=" + event.data.Id;
+                }
+            };
+            var eGridDiv = document.querySelector("#GridModelList");
+            // eslint-disable-next-line no-undef
+            new agGrid.Grid(eGridDiv, gridOptions);
+        },
+        sortByKey(array, key) {
+            return array.sort(function(a, b) {
+                var x = a[key];
+                var y = b[key];
+                return x > y ? -1 : x < y ? 1 : 0;
+            });
         }
     }
 };
 </script>
 
-<style>
-p {
-    margin: 0;
+<style scoped>
+.container-grid {
+    text-align: center;
 }
 
-.cateListCustomer {
-    list-style: none;
-    padding-left: 20px;
-    padding-bottom: 10px;
+.grid {
+    width: 100%;
+    height: 700px;
     display: inline-block;
-    width: 33%;
-    overflow: hidden;
-}
-
-.cateListCustomer:hover {
-    text-decoration: underline;
-    font-weight: 700;
-}
-
-.li-con {
-    list-style: none;
-    padding-bottom: 10px;
-    text-align: left;
-}
-
-.switchDayCount {
-    height: 30px;
-    padding-left: 10px;
-    display: inline;
-    padding-right: 10px;
-    list-style: none;
-}
-
-.customNumber {
-    vertical-align: top;
-}
-
-.customerName {
-    width: 60%;
-    display: inline-block;
-    vertical-align: text-top;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.customerID {
-    width: 20%;
-    max-width: 60px;
-    display: inline-block;
-    vertical-align: text-top;
 }
 </style>

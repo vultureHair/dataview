@@ -82,10 +82,10 @@ export default {
     height: 360px;
 }
 
-.right-two {
+/* .right-two {
     border-bottom: 1px solid #000;
     height: 151px;
-}
+} */
 
 .center-three {
     display: grid;

@@ -79,7 +79,7 @@ export default {
                         }
                     },
                     {
-                        name: this.$t("category.layout.sales"),
+                        name: this.$t("category.layout.ratio"),
                         data: [],
                         type: "line",
                         symbolSize: 0,

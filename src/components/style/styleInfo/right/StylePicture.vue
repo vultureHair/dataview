@@ -5,6 +5,7 @@
             <h3>{{ $t("category.info.nearLeft") }}{{ day }}{{ $t("category.info.dayRight") }}：</h3>
             <h4>{{ $t("category.info.salesTotalQuantity") }}：{{ salesVolume }}</h4>
             <h4>{{ $t("category.info.salesTotalaccount") }}：{{ salesPrice }}</h4>
+            <h4>{{ $t("product.info.CumulativeProfit") }}：{{ profit | globalMoney }}</h4>
         </div>
     </div>
 </template>
@@ -22,7 +23,8 @@ export default {
         return {
             style: "",
             salesVolume: "",
-            salesPrice: ""
+            salesPrice: "",
+            profit: ""
         };
     },
     watch: {
@@ -45,10 +47,17 @@ export default {
             }
 
             this.axios
-                .get(this.GLOBAL.urlHead + "StyleInfo/GetStyleSalesTotal?style=" + this.style + "&day=" + this.day)
+                .get(
+                    this.GLOBAL.urlHead +
+                        "StyleInfo/GetStyleSalesTotal?style=" +
+                        this.style +
+                        "&day=" +
+                        this.day
+                )
                 .then(response => {
                     this.salesVolume = response.data.data[0].total;
                     this.salesPrice = response.data.data[0].totalSales;
+                    this.profit = response.data.data[0].profit;
                 })
                 .catch(function(error) {
                     console.log(error);

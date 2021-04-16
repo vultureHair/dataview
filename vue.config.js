@@ -23,7 +23,7 @@ module.exports = {
                 target: "http://data.ivalor.com/api", //代理的目标地址，这是豆瓣接口地址网址
                 //开发环境
                 //target: "http://localhost:26481/api",
-                changeOrigin: true, //是否设置同源，输入是的
+                changeOrigin: true, //是否需要跨域
                 pathRewrite: {
                     //路径重写
                     // "/v1": "/v1" //选择忽略拦截器里面的单词

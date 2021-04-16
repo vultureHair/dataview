@@ -114,10 +114,16 @@ export default {
                 pagination: true, //开启分页（前端分页）
                 paginationAutoPageSize: true, //根据网页高度自动分页（前端分页）
                 onRowDoubleClicked: function(event) {
-                    window.location.href =
+                    window.open(
                         "http://data.ivalor.com/#/productInfo?barCode=" +
-                        event.data.Barcode +
-                        "&daycount=180";
+                            event.data.Barcode +
+                            "&daycount=180",
+                        "_blank"
+                    );
+                    // window.location.href =
+                    //     "http://data.ivalor.com/#/productInfo?barCode=" +
+                    //     event.data.Barcode +
+                    //     "&daycount=180";
                 }
             };
             var eGridDiv = document.querySelector("#GridCategory");

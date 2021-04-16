@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h3>产品关联一览表</h3>
-        <p class="showData">（显示最近180天数据）</p>
+        <h3>{{ $t("product.info.salesListRelevance") }}</h3>
+        <p class="showData">（{{ this.$t("product.info.salesData180") }}）</p>
         <el-button type="primary" icon="el-icon-download" class="downloadData" @click="download()"
             >下载</el-button
         >
@@ -116,13 +116,13 @@ export default {
                     filter: true //开启刷选
                 },
                 pagination: true, //开启分页（前端分页）
-                paginationAutoPageSize: true, //根据网页高度自动分页（前端分页）
-                onRowDoubleClicked: function(event) {
-                    window.location.href =
-                        "http://data.ivalor.com/#/productInfo?barCode=" +
-                        event.data.Barcode +
-                        "&daycount=180";
-                }
+                paginationAutoPageSize: true //根据网页高度自动分页（前端分页）
+                // onRowDoubleClicked: function(event) {
+                //     window.location.href =
+                //         "http://data.ivalor.com/#/productInfo?barCode=" +
+                //         event.data.Barcode +
+                //         "&daycount=180";
+                // }
             };
             var eGridDiv = document.querySelector("#GridCategory");
             // eslint-disable-next-line no-undef

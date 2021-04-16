@@ -117,7 +117,11 @@ export default {
             this.GetBarcode();
 
             this.axios
-                .get(this.GLOBAL.urlHead + "ProductDetail/getsalequantitybybarcode?barCode=" + this.barCode)
+                .get(
+                    this.GLOBAL.urlHead +
+                        "ProductDetail/getsalequantitybybarcode?barCode=" +
+                        this.barCode
+                )
                 .then(response => {
                     this.option.series[0].data = response.data.data;
 

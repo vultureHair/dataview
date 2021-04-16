@@ -12,7 +12,7 @@ export default {
         return {
             option: {
                 title: {
-                    text: this.$t("boss.weekChart"),
+                    text: this.$t("boss.monthChart"),
                     left: "center"
                 },
                 tooltip: {

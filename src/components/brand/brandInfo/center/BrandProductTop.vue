@@ -60,12 +60,14 @@ export default {
                 yAxis: [
                     {
                         type: "value",
-                        name: this.$t("product.tendency.salesQuantity")
+                        name: this.$t("product.tendency.salesQuantity"),
+                        splitLine: false
                     },
                     {
                         type: "value",
                         name: this.$t("product.tendency.salesQuantity"),
-                        show: false
+                        show: false,
+                        splitLine: false
                     }
                 ],
                 series: [

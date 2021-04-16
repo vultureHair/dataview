@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>{{ $t("customer.info.lineTitle") }}</h3>
+        <h3>{{ $t("customer.info.tableTitle") }}</h3>
         <el-button
             type="primary"
             icon="el-icon-download"
@@ -22,12 +22,29 @@ export default {
         return {
             customer: "",
             tableData: "",
-            fields: ["sil_No_", "totalValue", "totalPrice", "totalOrder"],
+            fields: ["sil_No_", "orderDate", "totalValue", "totalPrice", "totalProfit"],
             columnsName: [
                 {
                     field: "sil_No_",
                     headerName: this.$t("category.info.barcode"),
                     pinned: "left"
+                },
+                {
+                    field: "ProductId",
+                    headerName: this.$t("product.list.proCode"),
+                    pinned: "left"
+                },
+                {
+                    field: "orderDate",
+                    headerName: this.$t("customer.info.orderDate")
+                },
+                {
+                    field: "Unit_Price",
+                    headerName: this.$t("customer.info.Unit_Price")
+                },
+                {
+                    field: "Unit_Cost",
+                    headerName: this.$t("customer.info.Unit_Cost")
                 },
                 {
                     field: "totalValue",
@@ -38,8 +55,8 @@ export default {
                     headerName: this.$t("customer.info.orderAccount")
                 },
                 {
-                    field: "totalOrder",
-                    headerName: this.$t("customer.info.order")
+                    field: "totalProfit",
+                    headerName: this.$t("customer.info.totalProfit")
                 }
             ]
         };
@@ -92,10 +109,16 @@ export default {
                 pagination: true, //开启分页（前端分页）
                 paginationAutoPageSize: true, //根据网页高度自动分页（前端分页）
                 onRowDoubleClicked: function(event) {
-                    window.location.href =
+                    window.open(
                         "http://data.ivalor.com/#/productInfo?barCode=" +
-                        event.data.sil_No_ +
-                        "&daycount=180";
+                            event.data.sil_No_ +
+                            "&daycount=180",
+                        "_blank"
+                    );
+                    // window.location.href =
+                    //     "http://data.ivalor.com/#/productInfo?barCode=" +
+                    //     event.data.sil_No_ +
+                    //     "&daycount=180";
                 }
             };
             var eGridDiv = document.querySelector("#GridCategory");
